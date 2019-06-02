@@ -41,12 +41,16 @@ public class Main {
 		Mat rotationMatrix = Mat.eye(new Size(3, 3), CvType.CV_64FC1);
 		rotationMatrix.put(1, 1, new double[] { -1 });
 
+		System.out.println("R: " + rotationMatrix.dump());
+
 		Mat translationVector = new Mat(new Size(3, 1), CvType.CV_64FC1);
 		{
 			translationVector.put(0, 0, new double[] { 0 });
 			translationVector.put(0, 1, new double[] { 10 });
 			translationVector.put(0, 2, new double[] { 1 });
 		}
+
+		System.out.println("t: " + translationVector.dump());
 
 		MatOfPoint3f pointsSrc = new MatOfPoint3f();
 		List<Point3> pointsList = new ArrayList<Point3>();
