@@ -1,8 +1,6 @@
 package com.github.smk7758.OpenCV_TestProjectPoints;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Core;
@@ -15,28 +13,36 @@ import org.opencv.core.Point3;
 import org.opencv.core.Size;
 
 public class Main {
-	private static final String camparaPathString = "S:\\FingerPencil\\CalclatePoint_Test_2019-05-18\\CameraCalibration_Test_2019-05-18.xml";
+	private static final String camparaPathString = "S:\\new_program\\CameraCalibration_TestProjectPoints_2019-06-02.xml";
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
 
 	public static void main(String[] args) {
+		testProjectPoints();
+	}
+
+	public static void testProjectPoints() {
 		CameraParameter cameraParameter = new CameraParameter(Paths.get(camparaPathString));
 
 		Mat cameraMatrix = cameraParameter.cameraMatrix;
 		MatOfDouble distortionCoefficients = cameraParameter.distortionCoefficients_;
 
-		Mat vectorA = new Mat(3, 1, CvType.CV_64F);
-		vectorA.put(0, 0, new double[] { 0, 10, 5 });
+		Mat vectorAw = new Mat(3, 1, CvType.CV_64F);
+		vectorAw.put(0, 0, new double[] { 0, 0, 4 });
 
-		Mat vectorB = new Mat(3, 1, CvType.CV_64F);
-		vectorB.put(0, 0, new double[] { 0, 5, 5 });
+		Mat vectorBw = new Mat(3, 1, CvType.CV_64F);
+		vectorBw.put(0, 0, new double[] { 0, 5, 4 });
 
-		System.out.println("vectorA: " + vectorA.dump());
+		System.out.println("vectorAw: " + vectorAw.dump());
+		System.out.println("vectorBw: " + vectorBw.dump());
 
-		Point3 pointA = new Point3(vectorA.get(0, 0)[0], vectorA.get(1, 0)[0], vectorA.get(2, 0)[0]);
-		System.out.println("pointA: " + pointA.x + ", " + pointA.y + ", " + pointA.z);
+		Point3 pointAw = new Point3(vectorAw.get(0, 0)[0], vectorAw.get(1, 0)[0], vectorAw.get(2, 0)[0]);
+		System.out.println("pointAw: " + pointAw.x + ", " + pointAw.y + ", " + pointAw.z);
+
+		Point3 pointBw = new Point3(vectorBw.get(0, 0)[0], vectorBw.get(1, 0)[0], vectorBw.get(2, 0)[0]);
+		System.out.println("pointBw: " + pointBw.x + ", " + pointBw.y + ", " + pointBw.z);
 
 		Mat rotationMatrix = Mat.eye(new Size(3, 3), CvType.CV_64FC1);
 		rotationMatrix.put(1, 1, new double[] { -1 });
@@ -52,12 +58,15 @@ public class Main {
 
 		System.out.println("t: " + translationVector.dump());
 
-		MatOfPoint3f pointsSrc = new MatOfPoint3f();
-		List<Point3> pointsList = new ArrayList<Point3>();
-		pointsList.add(pointA);
-		pointsSrc.fromList(pointsList);
-		// pointsSrc.push_back(vectorA);
-		// pointsSrc.push_back(vectorB);
+		MatOfPoint3f pointsSrc = new MatOfPoint3f(pointAw, pointBw);
+		// List<Point3> pointsList = new ArrayList<Point3>();
+		// pointsList.add(pointAw);
+		// pointsList.add(pointBw);
+		// pointsSrc.fromList(pointsList);
+
+		// 下は無理
+		// pointsSrc.push_back(vectorAw);
+		// pointsSrc.push_back(vectorBw);
 
 		MatOfPoint2f pointsDst = new MatOfPoint2f();
 
@@ -66,6 +75,6 @@ public class Main {
 		Calib3d.projectPoints(pointsSrc, rotationMatrix, translationVector,
 				cameraMatrix, distortionCoefficients, pointsDst);
 
-		System.out.println("pointDst A: " + pointsDst.dump());
+		System.out.println("pointDst: " + pointsDst.dump());
 	}
 }

@@ -67,7 +67,7 @@ public class MatIO {
 			for (int col = 0; col < cols; col++) {
 				double[] matData = new double[channels];
 				for (int channel = 0; channel < channels; channel++) {
-					System.out.println(matDataSplitted[col * channels + channel].trim()); // TODO
+					// System.out.println(matDataSplitted[col * channels + channel].trim()); // TODO
 
 					matData[channel] = Double.valueOf(matDataSplitted[col * channels + channel].trim());
 
@@ -99,7 +99,7 @@ public class MatIO {
 
 			for (int col = 0; col < cols; col++) {
 				for (int channel = 0; channel < channels; channel++) {
-					System.out.println(matDataSplitted[col * channels + channel].trim()); // TODO
+					// System.out.println(matDataSplitted[col * channels + channel].trim()); // TODO
 
 					matData[channel] = Double.valueOf(matDataSplitted[col * channels + channel].trim());
 
